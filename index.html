@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frontend Internship Test Project">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <title>Frontend Internship Test</title>
+</head>
+
+<body>
+    <!-- Top Section -->
+    <div class="top-section">
+        <!-- Main Banner -->
+        <div class="banner">
+            <img src="/images/img1.png" alt="Main Banner">
+            <button class="shop-now-btn1">Shop Now</button>
+        </div>
+    
+        <!-- Side Banners -->
+        <div class="side-banners">
+            <div class="banner">
+                <img src="/images/img2.png" alt="Side Banner 1">
+                <button class="shop-now-btn2">Shop Now</button>
+            </div>
+            <div class="banner">
+                <img src="/images/img3.png" alt="Side Banner 2">
+                <button class="shop-now-btn3">Shop Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flexbox Section -->
+    <div class="flex-section">
+        <div class="flex-item">
+            <h3>Tattoo Supplies</h3>
+            <img src="/images/img1.png" alt="Tattoo Supplies">
+            <button>Shop Now</button>
+        </div>
+        <div class="flex-item">
+            <h3>Body Jewelry</h3>
+            <img src="/images/img2.png" alt="Body Jewelry">
+            <button>Shop Now</button>
+        </div>
+        <div class="flex-item">
+            <h3>Piercing Supplies</h3>
+            <img src="/images/img3.png" alt="Piercing Supplies">
+            <button>Shop Now</button>
+        </div>
+        <div class="flex-item">
+            <h3>Medical Supplies</h3>
+            <img src="/images/img1.png" alt="Medical Supplies">
+            <button>Shop Now</button>
+        </div>
+        <div class="flex-item">
+            <h3>Permanent Makeup</h3>
+            <img src="/images/img2.png" alt="Permanent Makeup">
+            <button>Shop Now</button>
+        </div>
+    </div>
+
+    <!-- Carousel Section -->
+    <div class="carousel-container">
+        <h2 class="carousel-title">New Products</h2>
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-item">
+                    <img src="/images/img1.png" alt="Product 1">
+                    <p>$449.99</p>
+                    <h3>Rock Quill Rotary Tattoo Machine — Copper</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/img2.png" alt="Product 2">
+                    <p>$449.99</p>
+                    <h3>Rock Quill Rotary Tattoo Machine — Blue</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/img2.png" alt="Product 3">
+                    <p>$1,199.99</p>
+                    <h3>Pre-Order — Inkjecta Flite X1 Wireless Tattoo Machine</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/img3.png" alt="Product 4">
+                    <p>$1,199.99</p>
+                    <h3>Pre-Order — Inkjecta Flite X1 Wireless Tattoo Machine</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/img1.png" alt="Product 5">
+                    <p>$1,199.99</p>
+                    <h3>Pre-Order — Inkjecta Flite X1 Wireless Tattoo Machine</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/img2.png" alt="Product 5">
+                    <p>$1,199.99</p>
+                    <h3>Pre-Order — Inkjecta Flite X1 Wireless Tattoo Machine</h3>
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/img3.png" alt="Product 5">
+                    <p>$1,199.99</p>
+                    <h3>Pre-Order — Inkjecta Flite X1 Wireless Tattoo Machine</h3>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-btn prev-btn">&lt;</button>
+        <button class="carousel-btn next-btn">&gt;</button>
+        <div class="carousel-dots">
+            <div class="carousel-dot active"></div>
+            <div class="carousel-dot"></div>
+            <div class="carousel-dot"></div>
+        </div>
+    </div>
+
+    <!-- Keep all your existing HTML and CSS -->
+    <script>
+        // Carousel functionality with infinite loop
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.querySelector('.next-btn');
+        const prevButton = document.querySelector('.prev-btn');
+        const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+
+        // Clone first and last slides for infinite effect
+        const cloneFirst = slides[0].cloneNode(true);
+        const cloneLast = slides[slides.length - 1].cloneNode(true);
+        track.appendChild(cloneFirst);
+        track.insertBefore(cloneLast, slides[0]);
+
+        let currentIndex = 1; // Start at first real product
+        let isTransitioning = false;
+        const slideCount = slides.length;
+        let slideWidth = slides[0].offsetWidth;
+
+        // Initialize carousel position
+        track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+
+        function updateDots() {
+            const realIndex = (currentIndex - 1 + slideCount) % slideCount;
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === realIndex));
+        }
+
+        function moveTo(index, animate = true) {
+            if (isTransitioning) return;
+
+            isTransitioning = true;
+            track.style.transition = animate ? 'transform 0.5s ease-in-out' : 'none';
+            track.style.transform = `translateX(-${index * slideWidth}px)`;
+            currentIndex = index;
+
+            if (animate) {
+                track.addEventListener('transitionend', () => {
+                    // Handle wraparound
+                    if (currentIndex === 0) {
+                        currentIndex = slideCount;
+                        track.style.transition = 'none';
+                        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                    }
+                    if (currentIndex === slideCount + 1) {
+                        currentIndex = 1;
+                        track.style.transition = 'none';
+                        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                    }
+                    isTransitioning = false;
+                    updateDots();
+                }, { once: true });
+            } else {
+                isTransitioning = false;
+                updateDots();
+            }
+        }
+
+        // Navigation controls
+        nextButton.addEventListener('click', () => moveTo(currentIndex + 1));
+        prevButton.addEventListener('click', () => moveTo(currentIndex - 1));
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => moveTo(index + 1));
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            slideWidth = slides[0].offsetWidth;
+            track.style.transition = 'none';
+            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        });
+
+        // Initialize dots
+        updateDots();
+    </script>
+</body>
+
+</html>
